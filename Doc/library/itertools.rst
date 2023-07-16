@@ -1045,6 +1045,8 @@ The following recipes have a more mathematical flavor:
    def factor(n):
        "Prime factors of n."
        # factor(99) --> 3 3 11
+       # factor(1_000_000_000_000_007) --> 47 59 360620266859
+       # factor(1_000_000_000_000_403) --> 1000000000000403
        for prime in sieve(math.isqrt(n) + 1):
            while True:
                quotient, remainder = divmod(n, prime)
@@ -1085,8 +1087,8 @@ The following recipes have a more mathematical flavor:
        kernel = tuple(kernel)[::-1]
        n = len(kernel)
        padded_signal = chain(repeat(0, n-1), signal, repeat(0, n-1))
-       for window in sliding_window(padded_signal, n):
-           yield math.sumprod(kernel, window)
+       windowed_signal = sliding_window(padded_signal, n)
+       return map(math.sumprod, repeat(kernel), windowed_signal)
 
    def polynomial_from_roots(roots):
        """Compute a polynomial's coefficients from its roots.
